@@ -41,7 +41,7 @@ const BikesPage = () => {
       }
     };
     fetchDataAsync();
-  }, [currentPage, searchQuery, refresh]);
+  }, [currentPage, searchQuery, refresh, totalBikes]);
 
   useEffect(() => {
     const fetchDataTotalLengthAsync = async () => {
