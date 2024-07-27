@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { fetchData, fetchDataTotalLength } from "../lib/data";
 import Pagination from "../components/Pagination";
 import BikeCard from "../components/BikeCard";
@@ -67,7 +67,7 @@ const BikesPage = () => {
     }
   }, [fetchBikes]);
 
-  const handleFilter = async () => {
+  const handleFilter = useCallback(async () => {
     if (!dateRange.start || !dateRange.end) {
       alert("Please select both start and end dates.");
       return;
@@ -90,6 +90,7 @@ const BikesPage = () => {
     setLoading(true);
 
     try {
+      setSearchValue("");
       setShowAllBikes(false);
       setActiveButton(null);
       setIsFiltered(true);
@@ -105,13 +106,13 @@ const BikesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange, loadBikes]);
 
   //___________________________________________________________________________________________________
 
-  const handlePageChange = (number) => {
+  const handlePageChange = useCallback((number) => {
     setCurrentPage(number);
-  };
+  }, []);
 
   useEffect(() => {
     const fetchDataAsync = async () => {
@@ -173,6 +174,11 @@ const BikesPage = () => {
     fetchProximity();
   }, []);
 
+  const filteredBikeCount = useMemo(
+    () => filteredBikes.length,
+    [filteredBikes]
+  );
+
   if (loading) return <BikesPageSkeleton />;
   else if (error)
     return (
@@ -199,7 +205,7 @@ const BikesPage = () => {
       {isFiltered && (
         <h1 className="flex  w-full text-xl md:text-2xl font-bold text-blue-400">
           Number of filtered bikes:{" "}
-          <span className="text-blue-600">&nbsp; {filteredBikes.length} </span>
+          <span className="text-blue-600">&nbsp; {filteredBikeCount} </span>
         </h1>
       )}
       <div className="flex w-full gap-4  items-center justify-between ">
@@ -232,6 +238,7 @@ const BikesPage = () => {
             activeButton === 1 ? "bg-gray-700 text-white " : "hover:bg-gray-200"
           } text-sm  outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px]  w-full h-12`}
           onClick={() => {
+            setSearchValue("");
             setCurrentPage(1);
             setIsFiltered(false);
             setActiveButton(1);
@@ -246,6 +253,7 @@ const BikesPage = () => {
             activeButton === 2 ? "bg-gray-700 text-white " : "hover:bg-gray-200"
           } text-sm outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px] w-full h-12`}
           onClick={() => {
+            setSearchValue("");
             setCurrentPage(1);
             setIsFiltered(false);
             setActiveButton(2);
@@ -260,6 +268,7 @@ const BikesPage = () => {
             activeButton === 3 ? "bg-gray-700 text-white " : "hover:bg-gray-200"
           } text-sm  outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px] w-full h-12 `}
           onClick={() => {
+            setSearchValue("");
             setCurrentPage(1);
             setIsFiltered(false);
             setActiveButton(3);
@@ -276,6 +285,7 @@ const BikesPage = () => {
               : "hover:bg-gray-200 "
           } text-sm outline-none border-gray-600 border-[1px] h-12 w-full p-2`}
           onClick={() => {
+            setSearchValue("");
             setCurrentPage(1);
             setActiveButton(4);
             setIsFiltered(false);
