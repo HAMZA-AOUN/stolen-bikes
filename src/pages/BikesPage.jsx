@@ -73,13 +73,13 @@ const BikesPage = () => {
       return;
     }
 
-    const startDate = new Date(dateRange.start).getTime();
-    const endDate = new Date(dateRange.end).getTime();
-    let date = new Date().toLocaleDateString();
-    let curerentDate = new Date(date).getTime();
+    const startDate = new Date(dateRange.start + "T00:00:00Z").getTime();
+    const endDate = new Date(dateRange.end + "T23:59:59Z").getTime();
+    const currentDate = new Date().toISOString().split("T")[0] + "T23:59:59Z";
+    const curerentDate = new Date(currentDate).getTime();
 
     if (startDate > curerentDate) {
-      alert("Start date should be bigger than current date.");
+      alert("Start date should be before or equal to the current date.");
       return;
     }
     if (startDate > endDate) {
