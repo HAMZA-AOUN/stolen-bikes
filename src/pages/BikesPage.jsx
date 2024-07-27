@@ -213,7 +213,11 @@ const BikesPage = () => {
         />
         <button
           onClick={() => {
-            if (searchValue !== "") setActiveButton(null);
+            if (searchValue !== "") {
+              setActiveButton(null);
+              setIsFiltered(false);
+              setDateRange({ start: "", end: "" });
+            }
             setCurrentPage(1);
             setSearchQuery(searchValue);
           }}
@@ -229,6 +233,9 @@ const BikesPage = () => {
           } text-sm  outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px]  w-full h-12`}
           onClick={() => {
             setCurrentPage(1);
+            setIsFiltered(false);
+            setDateRange({ start: "", end: "" });
+
             setActiveButton(1);
             setStolenness("proximity");
           }}
@@ -241,7 +248,9 @@ const BikesPage = () => {
           } text-sm outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px] w-full h-12`}
           onClick={() => {
             setCurrentPage(1);
+            setIsFiltered(false);
             setActiveButton(2);
+            setDateRange({ start: "", end: "" });
 
             setStolenness("stolen");
           }}
@@ -254,7 +263,9 @@ const BikesPage = () => {
           } text-sm  outline-none border-gray-600 border-[1px] border-b-0 md:border-r-0 md:border-b-[1px] w-full h-12 `}
           onClick={() => {
             setCurrentPage(1);
+            setIsFiltered(false);
             setActiveButton(3);
+            setDateRange({ start: "", end: "" });
 
             setStolenness("non");
           }}
@@ -270,6 +281,8 @@ const BikesPage = () => {
           onClick={() => {
             setCurrentPage(1);
             setActiveButton(4);
+            setIsFiltered(false);
+            setDateRange({ start: "", end: "" });
 
             setStolenness("all");
           }}
@@ -321,7 +334,7 @@ const BikesPage = () => {
         )}
         {!showAllBikes && filteredBikes.length > 10 && (
           <button
-            className=" p-4 px-8 bg-gray-200 outline-none border-gray-500 rounded-lg shadow-md text-xl font-bold text-gray-500"
+            className=" p-4 mt-2 mb-10 px-8 bg-gray-200 outline-none border-gray-500 rounded-lg shadow-md text-xl font-bold text-gray-500"
             onClick={() => setShowAllBikes(true)}
           >
             See All
