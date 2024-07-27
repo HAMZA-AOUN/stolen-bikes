@@ -78,8 +78,6 @@ const BikesPage = () => {
     let date = new Date().toLocaleDateString();
     let curerentDate = new Date(date).getTime();
 
-    console.log("day", curerentDate);
-
     if (startDate > curerentDate) {
       alert("Start date should be bigger than current date.");
       return;
@@ -92,11 +90,11 @@ const BikesPage = () => {
     setLoading(true);
 
     try {
+      setShowAllBikes(false);
       setActiveButton(null);
       setIsFiltered(true);
 
       const allBikes = await loadBikes();
-      console.log("bikes:", allBikes);
       const filtered = allBikes.filter((bike) => {
         const bikeDate = new Date(bike.date_stolen * 1000).getTime();
         return bikeDate >= startDate && bikeDate <= endDate;
@@ -171,6 +169,7 @@ const BikesPage = () => {
         throw error;
       }
     };
+    setShowAllBikes(false);
     fetchProximity();
   }, []);
 
@@ -217,6 +216,7 @@ const BikesPage = () => {
               setActiveButton(null);
               setIsFiltered(false);
               setDateRange({ start: "", end: "" });
+              setShowAllBikes(false);
             }
             setCurrentPage(1);
             setSearchQuery(searchValue);
@@ -234,9 +234,8 @@ const BikesPage = () => {
           onClick={() => {
             setCurrentPage(1);
             setIsFiltered(false);
-            setDateRange({ start: "", end: "" });
-
             setActiveButton(1);
+            setDateRange({ start: "", end: "" });
             setStolenness("proximity");
           }}
         >
@@ -251,7 +250,6 @@ const BikesPage = () => {
             setIsFiltered(false);
             setActiveButton(2);
             setDateRange({ start: "", end: "" });
-
             setStolenness("stolen");
           }}
         >
@@ -266,7 +264,6 @@ const BikesPage = () => {
             setIsFiltered(false);
             setActiveButton(3);
             setDateRange({ start: "", end: "" });
-
             setStolenness("non");
           }}
         >
@@ -283,7 +280,6 @@ const BikesPage = () => {
             setActiveButton(4);
             setIsFiltered(false);
             setDateRange({ start: "", end: "" });
-
             setStolenness("all");
           }}
         >
